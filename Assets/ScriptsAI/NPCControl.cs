@@ -10,7 +10,13 @@ public class NPCControl : MonoBehaviour {
 
 	public GameObject player;
 	public Transform[] path;
+	public static float velocityFactor = 10.0f;
 	private FSMSystem fsm;
+
+	public static float GetVelocityFactor(){
+	
+		return velocityFactor;
+	}
 	
 	public void SetTransition(Transition t) { fsm.PerformTransition(t); }
 	
@@ -19,6 +25,8 @@ public class NPCControl : MonoBehaviour {
 		Debug.Log("START");
 		//player = GameObject.FindGameObjectWithTag ("Player");
 		MakeFSM();
+		//Ajuste aqui a velocidade da caminhada do NPC entre os Waypoints.
+		velocityFactor = 2.0f;
 	}
 
 	// Update is called once per frame
@@ -92,6 +100,7 @@ public class FollowPathState : FSMState
 		if (moveDir.magnitude < 1)
 		{
 			currentWayPoint++;
+			Debug.Log("Incrementa WayPoint");
 			if (currentWayPoint >= waypoints.Length)
 			{
 				currentWayPoint = 0;
@@ -99,12 +108,19 @@ public class FollowPathState : FSMState
 		}
 		else
 		{
-			vel = moveDir.normalized * 10;
-			
+			Debug.Log("vel do FollowPath");
+			vel = moveDir.normalized * NPCControl.GetVelocityFactor();
+
+			//Artificio que tenta evitar que o dinossauro ande de costas para o Way Point
+			npc.transform.RotateAround(npc.transform.position,Vector3.up, 180.0f);
 			// Rotate towards the waypoint
 			npc.transform.rotation = Quaternion.Slerp(npc.transform.rotation,
 			                                          Quaternion.LookRotation(moveDir),
-			                                          5 * Time.deltaTime);
+			                                          2 * Time.deltaTime);
+
+			//npc.transform.rotation.ToAngleAxis(180f,Vector3.up);
+			//npc.transform.RotateAround(npc.transform.position,Vector3.up, 180.0f);
+			//npc.transform.rotation = Quaternion.LookRotation(moveDir);
 			npc.transform.eulerAngles = new Vector3(0, npc.transform.eulerAngles.y, 0);
 			
 		}
@@ -146,7 +162,7 @@ public class ChasePlayerState : FSMState
 		                                          5 * Time.deltaTime);
 		npc.transform.eulerAngles = new Vector3(0, npc.transform.eulerAngles.y, 0);
 		
-		vel = moveDir.normalized * 10;
+		vel = moveDir.normalized * NPCControl.GetVelocityFactor();
 		
 		// Apply the new Velocity
 		//npc.rigidbody.velocity = vel;
