@@ -81,6 +81,9 @@ public class FollowPathState : FSMState
 		if (Physics.Raycast(npc.transform.position, npc.transform.forward, out hit, 15F))
 		{
 			Debug.Log("FollowPath: MENOS DE 15 METROS");
+			Debug.Log("FollowPath: VENDO OBJETO - " + hit.transform.gameObject.ToString());
+			Debug.DrawRay(npc.transform.position, npc.transform.forward);
+
 			if (hit.transform.gameObject.tag == "Player"){
 				npc.GetComponent<NPCControl>().SetTransition(Transition.SawPlayer);
 				Debug.Log("FollowPath: VIU JOGADOR");
@@ -111,6 +114,7 @@ public class FollowPathState : FSMState
 		{
 			Debug.Log("FollowPath: SEGUINDO WayPoints");
 			vel = moveDir.normalized * NPCControl.GetVelocityFactor();
+			Debug.DrawRay(npc.transform.position,moveDir);
 			
 			// Rotate towards the waypoint
 			npc.transform.rotation = Quaternion.Slerp(npc.transform.rotation,
@@ -156,7 +160,7 @@ public class ChasePlayerState : FSMState
 		//Vector3 vel = npc.rigidbody.velocity;
 		Vector3 vel = npc.GetComponent<Rigidbody>().velocity;
 		Vector3 moveDir = player.transform.position - npc.transform.position;
-		
+		Debug.DrawRay(npc.transform.position,moveDir);
 		// Rotate towards the waypoint
 		npc.transform.rotation = Quaternion.Slerp(npc.transform.rotation,
 		                                          Quaternion.LookRotation(moveDir),
