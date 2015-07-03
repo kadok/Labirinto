@@ -75,22 +75,23 @@ public class FollowPathState : FSMState
 	public override void Reason(GameObject player, GameObject npc)
 	{
 
-		Debug.Log("REASON");
+		Debug.Log("FollowPath: REASON");
 		// If the Player passes less than 15 meters away in front of the NPC
 		RaycastHit hit;
 		if (Physics.Raycast(npc.transform.position, npc.transform.forward, out hit, 15F))
 		{
-			Debug.Log("MENOS DE 15 METROS");
+			Debug.Log("FollowPath: MENOS DE 15 METROS");
 			if (hit.transform.gameObject.tag == "Player"){
 				npc.GetComponent<NPCControl>().SetTransition(Transition.SawPlayer);
-				Debug.Log("VIU JOGADOR");
+				Debug.Log("FollowPath: VIU JOGADOR");
 			}
 		}
 	}
 	
 	public override void Act(GameObject player, GameObject npc)
 	{
-		Debug.Log("ACT");
+		Debug.Log("FollowPath: ACT");
+		Debug.Log("FollowPath: player - "+player.ToString()+". npc - "+npc.ToString());
 		// Follow the path of waypoints
 		// Find the direction of the current way point 
 		//Vector3 vel = npc.rigidbody.velocity;
@@ -100,7 +101,7 @@ public class FollowPathState : FSMState
 		if (moveDir.magnitude < 1)
 		{
 			currentWayPoint++;
-			Debug.Log("Incrementa WayPoint");
+			Debug.Log("FollowPath: Incrementa WayPoint");
 			if (currentWayPoint >= waypoints.Length)
 			{
 				currentWayPoint = 0;
@@ -108,20 +109,19 @@ public class FollowPathState : FSMState
 		}
 		else
 		{
-			Debug.Log("vel do FollowPath");
+			Debug.Log("FollowPath: SEGUINDO WayPoints");
 			vel = moveDir.normalized * NPCControl.GetVelocityFactor();
-
-			//Artificio que tenta evitar que o dinossauro ande de costas para o Way Point
-			npc.transform.RotateAround(npc.transform.position,Vector3.up, 180.0f);
+			
 			// Rotate towards the waypoint
 			npc.transform.rotation = Quaternion.Slerp(npc.transform.rotation,
 			                                          Quaternion.LookRotation(moveDir),
 			                                          2 * Time.deltaTime);
-
+			
 			//npc.transform.rotation.ToAngleAxis(180f,Vector3.up);
 			//npc.transform.RotateAround(npc.transform.position,Vector3.up, 180.0f);
 			//npc.transform.rotation = Quaternion.LookRotation(moveDir);
 			npc.transform.eulerAngles = new Vector3(0, npc.transform.eulerAngles.y, 0);
+
 			
 		}
 		
@@ -141,15 +141,16 @@ public class ChasePlayerState : FSMState
 	
 	public override void Reason(GameObject player, GameObject npc)
 	{
-		// If the player has gone 30 meters away from the NPC, fire LostPlayer transition
-		if (Vector3.Distance (npc.transform.position, player.transform.position) >= 30) {
+		// If the player has gone 20 meters away from the NPC, fire LostPlayer transition
+		if (Vector3.Distance (npc.transform.position, player.transform.position) >= 20) {
 			npc.GetComponent<NPCControl> ().SetTransition (Transition.LostPlayer);
-			Debug.Log("NAO ESTA VENDO O JOGADOR");
+			Debug.Log("ChasePlayer: NAO ESTA VENDO O JOGADOR");
 		}
 	}
 	
 	public override void Act(GameObject player, GameObject npc)
 	{
+		Debug.Log("ChasePlayer: PERSEGUINDO O JOGADOR");
 		// Follow the path of waypoints
 		// Find the direction of the player 		
 		//Vector3 vel = npc.rigidbody.velocity;

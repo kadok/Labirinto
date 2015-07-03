@@ -47,6 +47,7 @@
   </ItemGroup>
   <ItemGroup>
      <Compile Include="Assets\Allosaurus\Standard Assets\Character Controllers\Sources\Scripts\MouseLook.cs" />
+     <Compile Include="Assets\ScriptsAI\AgentScript.cs" />
      <Compile Include="Assets\ScriptsAI\FSMSystem.cs" />
      <Compile Include="Assets\ScriptsAI\MaquinaEstados.cs" />
      <Compile Include="Assets\ScriptsAI\NPCControl.cs" />

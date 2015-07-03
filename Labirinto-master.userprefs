@@ -1,8 +1,10 @@
 ﻿<Properties>
-  <MonoDevelop.Ide.Workspace />
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" PreferredExecutionTarget="MonoDevelop.Default" />
   <MonoDevelop.Ide.Workbench ActiveDocument="Assets\ScriptsAI\NPCControl.cs">
     <Files>
-      <File FileName="Assets\ScriptsAI\NPCControl.cs" Line="114" Column="53" />
+      <File FileName="Assets\ScriptsAI\AgentScript.cs" Line="17" Column="42" />
+      <File FileName="Assets\ScriptsAI\NPCControl.cs" Line="83" Column="38" />
+      <File FileName="Assets\ScriptsAI\WayPointAi.cs" Line="38" Column="1" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
