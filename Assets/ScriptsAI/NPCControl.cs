@@ -78,9 +78,9 @@ public class FollowPathState : FSMState
 		Debug.Log("FollowPath: REASON");
 		// If the Player passes less than 15 meters away in front of the NPC
 		RaycastHit hit;
-		if (Physics.Raycast(npc.transform.position, npc.transform.forward, out hit, 15F))
+		if (Physics.Raycast(npc.transform.position, npc.transform.forward, out hit, 20F))
 		{
-			Debug.Log("FollowPath: MENOS DE 15 METROS");
+			Debug.Log("FollowPath: MENOS DE 20 METROS");
 			Debug.Log("FollowPath: VENDO OBJETO - " + hit.transform.gameObject.ToString());
 			Debug.DrawRay(npc.transform.position, npc.transform.forward);
 
@@ -146,7 +146,7 @@ public class ChasePlayerState : FSMState
 	public override void Reason(GameObject player, GameObject npc)
 	{
 		// If the player has gone 20 meters away from the NPC, fire LostPlayer transition
-		if (Vector3.Distance (npc.transform.position, player.transform.position) >= 20) {
+		if (Vector3.Distance (npc.transform.position, player.transform.position) >= 30) {
 			npc.GetComponent<NPCControl> ().SetTransition (Transition.LostPlayer);
 			Debug.Log("ChasePlayer: NAO ESTA VENDO O JOGADOR");
 		}
@@ -167,7 +167,7 @@ public class ChasePlayerState : FSMState
 		                                          5 * Time.deltaTime);
 		npc.transform.eulerAngles = new Vector3(0, npc.transform.eulerAngles.y, 0);
 		
-		vel = moveDir.normalized * NPCControl.GetVelocityFactor();
+		vel = moveDir.normalized * (NPCControl.GetVelocityFactor()*1.8f);//Aumenta 1.8x a velocidade do Dinossauro para correr atras do player
 		
 		// Apply the new Velocity
 		//npc.rigidbody.velocity = vel;
